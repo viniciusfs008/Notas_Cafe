@@ -66,13 +66,13 @@
                             <input type="text" class="form-control" name="qtd_sacas" id="qtd_sacas">
                         </div>
                         <div class="col-12">
-                            <label for="vl_sacas" class="form-label my-0 mt-2">Valor das Sacas:</label>
+                            <label for="vl_sacas" class="form-label my-0 mt-2">Valor da Sacas:</label>
                             <input type="text" class="form-control" name="vl_sacas" id="vl_sacas">
                         </div>
                         <div class="row mt-2 mx-0">
                             <div class="col-auto px-0">
                                 <input class="btn btn-dark" class="" type="button" value="Calcular"
-                                    onclick=calculaQ(this.form)>
+                                    onclick="calculaQ(this.form)">
                             </div>
                             <div class="col-auto">
                                 <input class="btn btn-dark" type="reset" value="Limpar">
@@ -80,10 +80,10 @@
                             <hr class="mt-2">
                         </div>
                         <h2>Resultados</h2>
-                        <!-- <div class="col-12">
+                        <div class="col-12">
                             <label for="total_din" class="form-label my-0 mt-2">Total Livre:</label>
                             <input type="text" class="form-control" name="total_din" id="total_din" disabled readonly>
-                        </div> -->
+                        </div>
                         <div class="col-12">
                             <label for="total_bruto" class="form-label my-0 mt-2">Total Bruto:</label>
                             <input type="text" class="form-control" name="total_bruto" id="total_bruto" disabled
@@ -120,15 +120,17 @@
         }
 
         function calculaQ(form) {
-            var qtd_sacas = Number(form.qtd_sacas.value);
-            var vl_sacas = Number(form.vl_sacas.value);
+            var qtd_sacas = eval(form.qtd_sacas.value);
+            var vl_sacas = eval(form.vl_sacas.value);
 
-            var total_bruto = qtd_sacas * vl_sacas;
-            form.total_bruto.value = formatarNumero(total_bruto, 2);
+            var total_din = qtd_sacas * vl_sacas;
+            form.total_din.value = formatarNumero(total_din, 2);
 
-            // Nova alíquota 2026
-            var fundo_rural = total_bruto * 0.0163;
-            form.fundo_rural.value = formatarNumero(fundo_rural, 2);
+            var total_bruto = (total_din / (1 - 0.0163));
+            form.total_bruto.value = formatarNumero(total_bruto, 4);
+
+            var fundo_rural = (total_bruto * 0.0163);
+            form.fundo_rural.value = formatarNumero(fundo_rural, 4);
 
             var total_liquido = total_bruto - fundo_rural;
             form.total_liquido.value = formatarNumero(total_liquido, 2);
